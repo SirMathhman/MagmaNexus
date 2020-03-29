@@ -1,5 +1,5 @@
 package com.meti;
 
 public interface Compiler {
-	void accept(String value);
+	Node parse(String value);
 }

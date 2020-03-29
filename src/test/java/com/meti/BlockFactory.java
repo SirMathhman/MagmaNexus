@@ -4,10 +4,10 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-class BlockFactory implements NodeFactory {
+class BlockFactory implements Parser {
 
 	@Override
-	public Optional<Node> parse(String value) {
+	public Optional<Node> parse(String content, Compiler compiler) {
 		return Optional.empty();
 	}
 
@@ -23,6 +23,11 @@ class BlockFactory implements NodeFactory {
 			return content.stream()
 					.map(Node::render)
 					.collect(Collectors.joining("", "{", "}"));
+		}
+
+		@Override
+		public JSONWritable toWritable() {
+			return null;
 		}
 	}
 

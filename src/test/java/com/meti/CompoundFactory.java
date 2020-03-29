@@ -4,17 +4,17 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 
-public class CompoundFactory implements NodeFactory {
-	private final Collection<? extends NodeFactory> factories;
+public class CompoundFactory implements Parser {
+	private final Collection<? extends Parser> factories;
 
-	public CompoundFactory(Collection<? extends NodeFactory> factories) {
+	public CompoundFactory(Collection<? extends Parser> factories) {
 		this.factories = Collections.unmodifiableCollection(factories);
 	}
 
 	@Override
-	public Optional<Node> parse(String value) {
+	public Optional<Node> parse(String content, Compiler compiler) {
 		return factories.stream()
-				.map(nodeFactory -> nodeFactory.parse(value))
+				.map(nodeFactory -> nodeFactory.parse(content, compiler))
 				.flatMap(Optional::stream)
 				.findFirst();
 	}

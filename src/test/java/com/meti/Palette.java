@@ -17,7 +17,7 @@ public class Palette {
 		RootCompiler.from(injector,
 				StructureFactory.class,
 				ReturnFactory.class,
-				IntFactory.class).accept(value);
+				IntFactory.class).parse(value);
 		Map<String, String> functions = cache.render();
 		assertEquals(1, functions.size());
 		assertEquals("{}", functions.get("main"));

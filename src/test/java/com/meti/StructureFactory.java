@@ -2,9 +2,9 @@ package com.meti;
 
 import java.util.Optional;
 
-class StructureFactory implements NodeFactory {
+class StructureFactory implements Parser {
 	@Override
-	public Optional<Node> parse(String value) {
+	public Optional<Node> parse(String content, Compiler compiler) {
 		return Optional.empty();
 	}
 
@@ -27,6 +27,11 @@ class StructureFactory implements NodeFactory {
 			       " " + name +
 			       " : () => " + type +
 			       " = " + content.render();
+		}
+
+		@Override
+		public JSONWritable toWritable() {
+			return null;
 		}
 	}
 }
