@@ -31,7 +31,7 @@ class StructureFactory implements Parser {
 
 		@Override
 		public JSONWritable toWritable() {
-			return null;
+			return new Function(name, type.render(), content.toWritable());
 		}
 	}
 }

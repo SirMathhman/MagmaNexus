@@ -19,8 +19,7 @@ public class MutableFunctionBuilder implements FunctionBuilder {
 
 	@Override
 	public JSONWritable complete(String name) {
-		List<JSONWritable> actionsCopy = new ArrayList<>(actions);
-		JSONWritable writable = new Function(name, type, actionsCopy);
+		JSONWritable writable = new Function(name, type, new BlockAction(actions));
 		this.type = null;
 		this.actions.clear();
 		return writable;
