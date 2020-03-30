@@ -22,9 +22,9 @@ public class StructureFactoryTest {
 		Cache cache = new MappedCache();
 		Injector injector = Guice.createInjector(new Data(cache));
 		RootCompiler.from(injector,
-				StructureFactory.class,
 				ReturnFactory.class,
-				IntFactory.class).parse(value);
+				IntFactory.class,
+				StructureFactory.class).parse(value);
 		Map<String, String> functions = cache.render();
 		assertEquals(1, functions.size());
 		assertEquals("{}", functions.get("main"));
