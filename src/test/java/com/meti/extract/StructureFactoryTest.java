@@ -1,4 +1,4 @@
-package com.meti;
+package com.meti.extract;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -15,9 +15,9 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Palette {
+public class StructureFactoryTest {
 	@Test
-	void test() {
+	void parse() {
 		String value = "val main : () => Int = {return 0;}";
 		Cache cache = new MappedCache();
 		Injector injector = Guice.createInjector(new Data(cache));
