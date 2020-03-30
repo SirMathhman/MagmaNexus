@@ -10,6 +10,11 @@ enum Primitive implements Type {
 	}
 
 	@Override
+	public boolean canAssignTo(Type parent){
+		return false;
+	}
+
+	@Override
 	public String render() {
 		return value;
 	}

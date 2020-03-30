@@ -13,12 +13,12 @@ class RootCompiler implements Compiler {
 		this.root = root;
 	}
 
-	public static Compiler from(Injector injector, Class<? extends Parser>... factoryClasses) {
+	public static Compiler from(Injector injector, Class<?>... factoryClasses) {
 		return from(injector, List.of(factoryClasses));
 	}
 
-	public static Compiler from(Injector injector, Collection<Class<? extends Parser>> factoryClasses) {
-		List<? extends Parser> factories = factoryClasses.stream()
+	public static Compiler from(Injector injector, Collection<Class<?>> factoryClasses) {
+		List<?> factories = factoryClasses.stream()
 				.map(injector::getInstance)
 				.collect(Collectors.toList());
 		Parser factory = new CompoundFactory(factories);
@@ -28,5 +28,15 @@ class RootCompiler implements Compiler {
 	@Override
 	public Node parse(String value) {
 		return root.parse(value, this).orElseThrow(() -> new IllegalArgumentException("Failed to parse: " + value));
+	}
+
+	@Override
+	public Type resolveName(String name) {
+		return null;
+	}
+
+	@Override
+	public Type resolveValue(String value) {
+		return null;
 	}
 }
