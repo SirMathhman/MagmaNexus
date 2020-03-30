@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class StructureFactory implements Parser {
 	@Override
@@ -33,13 +34,11 @@ public class StructureFactory implements Parser {
 	}
 
 	private static int findEquals(String content) {
-		String atIndex = "";
-		int index = -1;
-		do {
-			index = content.indexOf('=', index + 1);
-			if (-1 != index) atIndex = content.substring(index, index + 2);
-		} while ("=>".equals(atIndex) || -1 == index);
-		return index;
+		return IntStream.range(0, content.length())
+				.filter(i -> '=' == content.charAt(i))
+				.filter(i -> !"=>".equals(content.substring(i, i + 2)))
+				.max()
+				.orElse(-1);
 	}
 
 	private static Optional<? extends Node> parseValid(String content, Compiler compiler, int index) {
