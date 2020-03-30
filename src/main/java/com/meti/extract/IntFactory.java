@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class IntFactory implements Parser {
 	@Override
-	public Optional<Node> parse(String content, Compiler compiler) {
+	public Optional<? extends Node> parse(String content, Compiler compiler) {
 		try {
 			int i = Integer.parseInt(content);
 			return Optional.of(new Int(i));

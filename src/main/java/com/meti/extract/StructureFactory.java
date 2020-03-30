@@ -1,8 +1,8 @@
 package com.meti.extract;
 
-import com.meti.*;
+import com.meti.Node;
+import com.meti.Type;
 import com.meti.data.Compiler;
-import com.meti.writable.Function;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class StructureFactory implements Parser {
 	@Override
-	public Optional<Node> parse(String content, Compiler compiler) {
+	public Optional<? extends Node> parse(String content, Compiler compiler) {
 		/*
 		val x : () => Int = {return 10;}
 		{
@@ -26,6 +26,16 @@ public class StructureFactory implements Parser {
 			}
 		}
 		*/
+		int index = findEquals(content);
+		String before = content.substring(0, index);
+		String after = content.substring(index + 1);
+		StructureBuilder builder = new FunctionalStructureBuilder();
+		StructureBuilder withBefore = parseBefore(before, builder);
+		StructureBuilder withAfter = parseAfter(compiler, before, after, withBefore);
+		return wrapInOptional(withAfter);
+	}
+
+	private static int findEquals(String content) {
 		String atIndex;
 		int index = 0;
 		do {
@@ -35,61 +45,60 @@ public class StructureFactory implements Parser {
 			}
 			atIndex = content.substring(index, index + 2);
 		} while ("=>".equals(atIndex));
-		String before = content.substring(0, index);
-		String after = content.substring(index + 1);
+		return index;
+	}
+
+	private static StructureBuilder parseAfter(Compiler compiler, String before, String after,
+	                                           StructureBuilder builder) {
 		Node value = compiler.parse(after);
 		Type actual = compiler.resolveValue(after);
-		int typeIndex = before.indexOf(':');
-		Type type;
-		if (-1 == typeIndex) {
-			type = actual;
-		} else {
-			String typeString = before.substring(typeIndex + 1);
-			Type expected = compiler.resolveName(typeString);
-			if (actual.canAssignTo(expected)) {
-				type = expected;
-			} else {
-				throw new ExtractException(actual + " is not assignable to " + expected);
-			}
-		}
-		String keyString = -1 == typeIndex ? before : before.substring(0, typeIndex);
-		int lastSpace = keyString.lastIndexOf(' ');
-		String keys = keyString.substring(0, lastSpace);
-		String name = keyString.substring(lastSpace + 1);
-		List<StructureKey> keyList = Arrays.stream(keys.split(" "))
+		Type type = before.contains(":") ? actual : validate(compiler, before, actual);
+		return builder.withType(type)
+				.withContent(value);
+	}
+
+	private static StructureBuilder parseBefore(String before, StructureBuilder structureBuilder) {
+		String nameString = parseNameString(before);
+		String name = parseName(nameString);
+		List<StructureKey> keys = parseKeys(nameString);
+		return structureBuilder
+				.withKeys(keys)
+				.withName(name);
+	}
+
+	private static Optional<? extends Node> wrapInOptional(StructureBuilder builder) {
+		return Optional.of(builder)
+				.map(StructureBuilder::build)
+				.filter(Structure::isValid);
+	}
+
+	private static Type validate(Compiler compiler, String before, Type actual) {
+		int index = before.indexOf(':');
+		String typeString = before.substring(index + 1);
+		Type expected = compiler.resolveName(typeString);
+		if (!actual.canAssignTo(expected)) throw new ExtractException(actual + " is not assignable to " + expected);
+		return expected;
+	}
+
+	private static String parseNameString(String before) {
+		return before.contains(":") ? before.substring(0, before.indexOf(':')) : before;
+	}
+
+	private static String parseName(String nameString) {
+		int space = nameString.lastIndexOf(' ');
+		return nameString.substring(space + 1);
+	}
+
+	private static List<StructureKey> parseKeys(String keyString) {
+		int space = keyString.lastIndexOf(' ');
+		String keys = keyString.substring(0, space);
+		return convertKeyStringToList(keys);
+	}
+
+	private static List<StructureKey> convertKeyStringToList(String keyString) {
+		return Arrays.stream(keyString.split(" "))
 				.map(String::toUpperCase)
 				.map(StructureKey::valueOf)
 				.collect(Collectors.toList());
-		if (!keyList.contains(StructureKey.VAL) && !keyList.contains(StructureKey.VAR)) {
-			return Optional.empty();
-		}
-		return Optional.of(new Structure(keyList.contains(StructureKey.VAR), name, type, value));
-	}
-
-	static class Structure implements Node {
-		private final Node content;
-		private final boolean mutable;
-		private final String name;
-		private final Type type;
-
-		public Structure(boolean mutable, String name, Type type, Node content) {
-			this.mutable = mutable;
-			this.name = name;
-			this.type = type;
-			this.content = content;
-		}
-
-		@Override
-		public String render() {
-			return ((mutable) ? "var" : "val") +
-			       " " + name +
-			       " : () => " + type +
-			       " = " + content.render();
-		}
-
-		@Override
-		public JSONWritable toWritable() {
-			return new Function(name, type.render(), content.toWritable());
-		}
 	}
 }

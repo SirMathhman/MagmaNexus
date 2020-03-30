@@ -20,7 +20,7 @@ public class CompoundFactory implements Parser, Resolver {
 	}
 
 	@Override
-	public Optional<Node> parse(String content, Compiler compiler) {
+	public Optional<? extends Node> parse(String content, Compiler compiler) {
 		return parsers.stream()
 				.map(nodeFactory -> nodeFactory.parse(content, compiler))
 				.flatMap(Optional::stream)

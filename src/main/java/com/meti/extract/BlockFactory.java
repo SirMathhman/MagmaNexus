@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 class BlockFactory implements Parser {
 
 	@Override
-	public Optional<Node> parse(String content, Compiler compiler) {
+	public Optional<? extends Node> parse(String content, Compiler compiler) {
 		return Optional.empty();
 	}
 

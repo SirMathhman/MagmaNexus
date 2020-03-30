@@ -6,5 +6,5 @@ import com.meti.Node;
 import java.util.Optional;
 
 public interface Parser {
-	Optional<Node> parse(String content, Compiler compiler);
+	Optional<? extends Node> parse(String content, Compiler compiler);
 }

@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class ReturnFactory implements Parser {
 	@Override
-	public Optional<Node> parse(String content, Compiler compiler) {
+	public Optional<? extends Node> parse(String content, Compiler compiler) {
 		if (content.startsWith("return ")) {
 			String valueString = content.substring(7);
 			Node value = compiler.parse(valueString);
