@@ -1,6 +1,7 @@
-package com.meti;
+package com.meti.writable;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.meti.JSONWritable;
 
 import java.util.function.Supplier;
 

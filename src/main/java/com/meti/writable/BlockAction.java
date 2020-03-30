@@ -1,7 +1,8 @@
-package com.meti;
+package com.meti.writable;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.meti.JSONWritable;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -10,7 +11,7 @@ import java.util.function.Supplier;
 public class BlockAction extends Action {
 	private final Collection<JSONWritable> children;
 
-	BlockAction(Collection<JSONWritable> children) {
+	public BlockAction(Collection<JSONWritable> children) {
 		this("block", children);
 	}
 

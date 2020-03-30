@@ -1,14 +1,15 @@
-package com.meti;
+package com.meti.data;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.meti.JSONWritable;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-class MappedCache implements Cache {
+public class MappedCache implements Cache {
 	private final Map<String, JSONWritable> functions = new HashMap<>();
 	private final ObjectMapper mapper = new ObjectMapper();
 

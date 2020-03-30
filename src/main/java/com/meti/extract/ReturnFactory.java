@@ -1,8 +1,13 @@
-package com.meti;
+package com.meti.extract;
+
+import com.meti.data.Compiler;
+import com.meti.JSONWritable;
+import com.meti.Node;
+import com.meti.writable.ReturnAction;
 
 import java.util.Optional;
 
-class ReturnFactory implements Parser {
+public class ReturnFactory implements Parser {
 	@Override
 	public Optional<Node> parse(String content, Compiler compiler) {
 		if (content.startsWith("return ")) {

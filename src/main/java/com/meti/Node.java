@@ -1,6 +1,6 @@
 package com.meti;
 
-interface Node {
+public interface Node {
 	String render();
 
 	JSONWritable toWritable();

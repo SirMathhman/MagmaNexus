@@ -5,9 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.meti.data.RootCompiler;
+import com.meti.extract.IntFactory;
+import com.meti.extract.ReturnFactory;
 import org.junit.jupiter.api.Test;
-
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,12 +1,16 @@
-package com.meti;
+package com.meti.data;
 
 import com.google.inject.Injector;
+import com.meti.Node;
+import com.meti.Type;
+import com.meti.extract.CompoundFactory;
+import com.meti.extract.Parser;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class RootCompiler implements Compiler {
+public class RootCompiler implements Compiler {
 	private final Parser root;
 
 	public RootCompiler(Parser root) {

@@ -1,8 +1,13 @@
-package com.meti;
+package com.meti.extract;
+
+import com.meti.data.Compiler;
+import com.meti.JSONWritable;
+import com.meti.Node;
+import com.meti.writable.IntValue;
 
 import java.util.Optional;
 
-class IntFactory implements Parser {
+public class IntFactory implements Parser {
 	@Override
 	public Optional<Node> parse(String content, Compiler compiler) {
 		try {

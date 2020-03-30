@@ -1,6 +1,6 @@
 package com.meti;
 
-interface Type {
+public interface Type {
 	String render();
 
 	boolean canAssignTo(Type parent);

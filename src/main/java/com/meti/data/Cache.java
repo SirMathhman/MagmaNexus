@@ -1,4 +1,6 @@
-package com.meti;
+package com.meti.data;
+
+import com.meti.JSONWritable;
 
 import java.util.Map;
 

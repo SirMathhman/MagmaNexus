@@ -1,11 +1,15 @@
-package com.meti;
+package com.meti.extract;
+
+import com.meti.*;
+import com.meti.data.Compiler;
+import com.meti.writable.Function;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-class StructureFactory implements Parser {
+public class StructureFactory implements Parser {
 	@Override
 	public Optional<Node> parse(String content, Compiler compiler) {
 		/*
@@ -27,7 +31,7 @@ class StructureFactory implements Parser {
 		do {
 			index = content.indexOf('=', index);
 			if (-1 == index) {
-				throw new ParseException("No assignment was found.");
+				throw new ExtractException("No assignment was found.");
 			}
 			atIndex = content.substring(index, index + 2);
 		} while ("=>".equals(atIndex));
@@ -45,7 +49,7 @@ class StructureFactory implements Parser {
 			if (actual.canAssignTo(expected)) {
 				type = expected;
 			} else {
-				throw new ParseException(actual + " is not assignable to " + expected);
+				throw new ExtractException(actual + " is not assignable to " + expected);
 			}
 		}
 		String keyString = -1 == typeIndex ? before : before.substring(0, typeIndex);

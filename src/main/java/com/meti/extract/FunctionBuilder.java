@@ -1,7 +1,6 @@
-package com.meti;
+package com.meti.extract;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.meti.JSONWritable;
 
 public interface FunctionBuilder {
 	void append(JSONWritable action);

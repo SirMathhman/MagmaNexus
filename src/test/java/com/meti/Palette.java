@@ -2,6 +2,13 @@ package com.meti;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.meti.data.Cache;
+import com.meti.data.Data;
+import com.meti.data.MappedCache;
+import com.meti.data.RootCompiler;
+import com.meti.extract.IntFactory;
+import com.meti.extract.ReturnFactory;
+import com.meti.extract.StructureFactory;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;

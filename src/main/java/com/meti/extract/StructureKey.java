@@ -1,4 +1,4 @@
-package com.meti;
+package com.meti.extract;
 
 public enum StructureKey {
 	VAL,

@@ -1,4 +1,8 @@
-package com.meti;
+package com.meti.extract;
+
+import com.meti.data.Compiler;
+import com.meti.Node;
+import com.meti.Type;
 
 import java.util.ArrayList;
 import java.util.Collection;
