@@ -37,9 +37,9 @@ public class StructureFactory implements Parser {
 
 	private static int findEquals(String content) {
 		String atIndex;
-		int index = 0;
+		int index = -1;
 		do {
-			index = content.indexOf('=', index);
+			index = content.indexOf('=', index + 1);
 			if (-1 == index) {
 				throw new ExtractException("No assignment was found.");
 			}
