@@ -22,6 +22,7 @@ public class StructureFactoryTest {
 		Cache cache = new MappedCache();
 		Injector injector = Guice.createInjector(new Data(cache));
 		RootCompiler.from(injector,
+				BlockFactory.class,
 				ReturnFactory.class,
 				IntFactory.class,
 				StructureFactory.class).parse(value);

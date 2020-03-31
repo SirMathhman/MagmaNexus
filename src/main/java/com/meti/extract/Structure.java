@@ -3,6 +3,7 @@ package com.meti.extract;
 import com.meti.JSONWritable;
 import com.meti.Node;
 import com.meti.Type;
+import com.meti.data.Cache;
 import com.meti.writable.Function;
 
 import java.util.Collections;
@@ -19,6 +20,11 @@ class Structure implements Node {
 		this.name = name;
 		this.type = type;
 		this.content = content;
+	}
+
+	public Node appendToCache(Cache cache) {
+		cache.append(name, toWritable());
+		return new EmptyNode();
 	}
 
 	public boolean isValid() {

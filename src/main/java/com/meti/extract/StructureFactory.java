@@ -1,7 +1,9 @@
 package com.meti.extract;
 
+import com.google.inject.Inject;
 import com.meti.Node;
 import com.meti.Type;
+import com.meti.data.Cache;
 import com.meti.data.Compiler;
 
 import java.util.Arrays;
@@ -11,6 +13,13 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class StructureFactory implements Parser {
+	private final Cache cache;
+
+	@Inject
+	public StructureFactory(Cache cache) {
+		this.cache = cache;
+	}
+
 	@Override
 	public Optional<? extends Node> parse(String content, Compiler compiler) {
 		/*
@@ -41,7 +50,7 @@ public class StructureFactory implements Parser {
 				.orElse(-1);
 	}
 
-	private static Optional<? extends Node> parseValid(String content, Compiler compiler, int index) {
+	private Optional<? extends Node> parseValid(String content, Compiler compiler, int index) {
 		String before = content.substring(0, index);
 		String after = content.substring(index + 1);
 		StructureBuilder builder = new FunctionalStructureBuilder();
@@ -61,17 +70,18 @@ public class StructureFactory implements Parser {
 
 	private static StructureBuilder parseAfter(Compiler compiler, String before, String after,
 	                                           StructureBuilder builder) {
-		Node value = compiler.parse(after);
+		Node value = compiler.parse(after.trim());
 		Type actual = compiler.resolveValue(after);
 		Type type = before.contains(":") ? actual : validate(compiler, before, actual);
 		return builder.withType(type)
 				.withContent(value);
 	}
 
-	private static Optional<? extends Node> wrapInOptional(StructureBuilder builder) {
+	private Optional<? extends Node> wrapInOptional(StructureBuilder builder) {
 		return Optional.of(builder)
 				.map(StructureBuilder::build)
-				.filter(Structure::isValid);
+				.filter(Structure::isValid)
+				.map(structure -> structure.appendToCache(cache));
 	}
 
 	private static String parseNameString(String before) {
