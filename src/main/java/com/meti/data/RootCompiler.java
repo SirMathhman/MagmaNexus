@@ -4,16 +4,16 @@ import com.google.inject.Injector;
 import com.meti.Node;
 import com.meti.Type;
 import com.meti.extract.CompoundFactory;
-import com.meti.extract.Parser;
+import com.meti.extract.Unit;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class RootCompiler implements Compiler {
-	private final Parser root;
+	private final Unit root;
 
-	public RootCompiler(Parser root) {
+	public RootCompiler(Unit root) {
 		this.root = root;
 	}
 
@@ -25,22 +25,27 @@ public class RootCompiler implements Compiler {
 		List<?> factories = factoryClasses.stream()
 				.map(injector::getInstance)
 				.collect(Collectors.toList());
-		Parser factory = new CompoundFactory(factories);
+		Unit factory = new CompoundFactory(factories);
 		return new RootCompiler(factory);
 	}
 
 	@Override
 	public Node parse(String value) {
-		return root.parse(value, this).orElseThrow(() -> new IllegalArgumentException("Failed to parse: " + value));
+		return root.parse(value, this).orElseThrow(() -> new IllegalArgumentException("Failed to parse: \"" + value +
+		                                                                              "\""));
 	}
 
 	@Override
 	public Type resolveName(String name) {
-		return null;
+		return root.resolveName(name, this).orElseThrow(() -> new IllegalArgumentException("Failed to resolve type of" +
+		                                                                                   " " +
+		                                                                                   "name: \"" + name + "\""));
 	}
 
 	@Override
 	public Type resolveValue(String value) {
-		return null;
+		return root.resolveValue(value, this).orElseThrow(() -> new IllegalArgumentException("Failed to resolve type " +
+		                                                                                     "of value: \"" + value +
+		                                                                                     "\""));
 	}
 }

@@ -45,6 +45,6 @@ class Structure implements Node {
 
 	@Override
 	public JSONWritable toWritable() {
-		return new Function(name, type.render(), content.toWritable());
+		return new Function(name, type.toWritable(), content.toWritable());
 	}
 }

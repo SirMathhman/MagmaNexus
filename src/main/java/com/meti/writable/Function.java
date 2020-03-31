@@ -8,9 +8,9 @@ import java.util.function.Supplier;
 public class Function implements JSONWritable {
 	private final JSONWritable actions;
 	private final String name;
-	private final String type;
+	private final JSONWritable type;
 
-	public Function(String name, String type, JSONWritable actions) {
+	public Function(String name, JSONWritable type, JSONWritable actions) {
 		this.name = name;
 		this.type = type;
 		this.actions = actions;
@@ -20,8 +20,8 @@ public class Function implements JSONWritable {
 	public ObjectNode write(Supplier<? extends ObjectNode> supplier) {
 		ObjectNode root = supplier.get();
 		root.put("name", name);
-		root.put("return", type);
-		root.set("actions", actions.write(supplier));
+		root.set("type", type.write(supplier));
+		root.set("content", actions.write(supplier));
 		return root;
 	}
 }

@@ -25,9 +25,13 @@ public class StructureFactoryTest {
 				BlockFactory.class,
 				ReturnFactory.class,
 				IntFactory.class,
-				StructureFactory.class).parse(value);
+				StructureFactory.class,
+				StructureResolver.class,
+				IntResolver.class).parse(value);
 		Map<String, String> functions = cache.render();
 		assertEquals(1, functions.size());
-		assertEquals("{}", functions.get("main"));
+		assertEquals("{\"name\":\"main\",\"type\":{\"params\":[],\"return\":{\"name\":\"int\"}}," +
+		             "\"content\":{\"action\":\"block\",\"actions\":[{\"action\":\"return\"," +
+		             "\"value\":{\"type\":\"int\",\"value\":0}}]}}", functions.get("main"));
 	}
 }

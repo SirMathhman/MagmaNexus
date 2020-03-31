@@ -71,8 +71,8 @@ public class StructureFactory implements Parser {
 	private static StructureBuilder parseAfter(Compiler compiler, String before, String after,
 	                                           StructureBuilder builder) {
 		Node value = compiler.parse(after.trim());
-		Type actual = compiler.resolveValue(after);
-		Type type = before.contains(":") ? actual : validate(compiler, before, actual);
+		Type actual = compiler.resolveValue(after.trim());
+		Type type = before.contains(":") ? validate(compiler, before, actual) : actual;
 		return builder.withType(type)
 				.withContent(value);
 	}
@@ -106,7 +106,7 @@ public class StructureFactory implements Parser {
 	private static Type validate(Compiler compiler, String before, Type actual) {
 		int index = before.indexOf(':');
 		String typeString = before.substring(index + 1);
-		Type expected = compiler.resolveName(typeString);
+		Type expected = compiler.resolveName(typeString.trim());
 		if (!actual.canAssignTo(expected)) throw new ExtractException(actual + " is not assignable to " + expected);
 		return expected;
 	}

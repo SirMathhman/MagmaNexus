@@ -1,7 +1,9 @@
 package com.meti;
 
 public interface Type {
+	boolean canAssignTo(Type parent);
+
 	String render();
 
-	boolean canAssignTo(Type parent);
+	JSONWritable toWritable();
 }
